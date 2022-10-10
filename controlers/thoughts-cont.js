@@ -1,3 +1,4 @@
+const { response } = require('express');
 const { Thoughts, User} = require('../models');
 const thoughtController = {
     getAllThoughts(req, res) { //grabs all of the thoughts 
@@ -76,6 +77,23 @@ deleteThoughts({params }, res) { //deletedd thoughts
     })
     .catch(err => res.json(err));
 },
+
+addRecation({params, body}, res) { //to post a reaction 
+    Thoughts.findOneAndUpdate(
+        { _id: params.thoughtId},
+        { $addToSet: { reaction: body } },
+        {new: true, runValidators:true },
+    )
+    .then(dbUserData => {
+        if(!dbUserData){
+            res.status(404).json({ message: 'no user found with this ID' });
+            return;
+        }
+        return res.json(dbUserData);
+    })
+    .catch(err => res.json(err));
+},
+
 
 
 }
