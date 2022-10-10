@@ -52,4 +52,21 @@ if(dateObj.getHours > 12) { //check for 24 hour format time
 }else{hour = dateObj.getHours();
 }
 
+if (hour === 0) { //if hour is 0 (12:00am), change it to 12 hour 
+    hour = 12;
+}
+
+const minutes = dateObj.getMinutes();
+
+let periodOfDay;
+
+if(dateObj.getHours() >= 12) {
+    periodOfDay ='pm';
+}else{
+    periodOfDay = 'am';
+}  
+
+const formattedTimeStamp = `${formattedMonths} ${dayOfMonth}, ${year} at ${hour}:${minutes} ${periodOfDay}`
+
+return formattedTimeStamp;
 };
