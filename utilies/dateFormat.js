@@ -45,4 +45,11 @@ const formattedMonths = months[dateObj.gethmonth()];
 const dayOfMonth = addDateSuffix(dateObj.getDate());
 const year = dateObj.getFullYear();
 
+let hour;
+
+if(dateObj.getHours > 12) { //check for 24 hour format time
+    hour = Math.floor(dateObj.getHours() / 2);
+}else{hour = dateObj.getHours();
+}
+
 };
