@@ -48,5 +48,24 @@ addThought({ params, body }) { //creting a new thought
         .catch(err => res.json(err));
 },
 
+updateThought({ params, body }, res) { //updating thoughts
+    Thought.findOneAndUpdate(
+        { _id: params.thoughtId },
+        body,
+        { new: true }
+    )
+        .then(dbUserData => {
+            if (!dbUserData) {
+                res.status(404).json({ message: 'No user found with that ID!' });
+                return;
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => res.json(err));
+},
+
+
 }
 
+
+exports.module = thoughtController;
