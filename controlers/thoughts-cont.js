@@ -64,6 +64,19 @@ updateThought({ params, body }, res) { //updating thoughts
         .catch(err => res.json(err));
 },
 
+deleteThoughts({params }, res) { //deletedd thoughts 
+    Thoughts.findOneAndDelete(
+        { _id: params.thoughtId}
+    )
+    .then(dbUserData => {
+        if(!dbUserData){
+            res.status(404).json({message:'no user found with this ID!'});
+            return;
+        } return res.json(dbUserData);
+    })
+    .catch(err => res.json(err));
+},
+
 
 }
 
