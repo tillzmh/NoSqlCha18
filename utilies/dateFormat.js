@@ -39,4 +39,10 @@ module.exports =(timestamp) => {
         11: 'Dec',
     };
 }
-}
+
+const dateObj = new Date(timestamp);
+const formattedMonths = months[dateObj.gethmonth()];
+const dayOfMonth = addDateSuffix(dateObj.getDate());
+const year = dateObj.getFullYear();
+
+};
