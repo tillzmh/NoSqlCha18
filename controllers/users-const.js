@@ -28,7 +28,15 @@ const userController = {
     console.log(err);
     return res. status(404).json(err);
 });
-    }
+    },
+
+    createUser({body}, res) { //created a new user
+        User.create(body)
+        .then(dbUserData => res.json(dbUserData))
+        .catch(err => res.status(404).json(err));
+    },
+
+
 
 
 }
