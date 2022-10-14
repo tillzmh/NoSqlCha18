@@ -12,5 +12,23 @@ const userController = {
         })
     },
 
+    getUserById({params}, res) { //get user by id ans will find thoughts for users
+        User.findOne({_id: params.id})
+        .populate({path:'thoughts', select: '-__v'})
+        .populate({path:'friends', select: '-__v'})
+        .select('-__v')
+        .then(dbUserData => {
+            if (!dbUserData){
+                res.status(404).send({message: 'User not found'});
+                return;
+            }
+            return res.json(dbUserData);
+        })
+.catch(err => {
+    console.log(err);
+    return res. status(404).json(err);
+});
+    }
+
 
 }
