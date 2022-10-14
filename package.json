@@ -1,4 +1,11 @@
 {
+  "name": "nosql-cha-18",
+  "description": "social api",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm start",
+    "start": "node server.js"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^6.6.5"

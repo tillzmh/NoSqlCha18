@@ -1,25 +1,25 @@
-const { response } = require('express');
-const { Thoughts, User} = require('../models');
+
+const { Thought, User} = require('../models');
 const thoughtController = {
 
-    getAllThoughts(req, res) { //grabs all of the thoughts 
-        Thoughts.find({})
-        .select('-__v')
-        .then(dbThoughtsData => res.json(dbThoughtsData))
-        .catch(err =>{
-            console.log(err);
-            return res.status(404).json(err);
-        });
+    getAllThoughts(req, res) {
+        Thought.find({})
+            .select('-__v')
+            .then(dbThoughtData => res.json(dbThoughtData))
+            .catch(err => {
+                console.log(err);
+                return res.status(400).json(err);
+            });
     },
 
     getThoughtsById({params}, res) { // get thoughst by id 
-        Thoughts.findOne({ _id: params.thoughtId })
+        Thought.findOne({ _id: params.thoughtId })
         .select('-__v')
-        .then(dbThoughtsData => {
-            if (!dbThoughtsData) {
+        .then(dbThoughtData => {
+            if (!dbThoughtData) {
                 res.status(404).json({ message: 'No thought found with this ID!' })
             }
-            return res.json(dbThoughtsData)
+            return res.json(dbThoughtData)
         })
         .catch(err => {
             console.log(err);
@@ -27,16 +27,16 @@ const thoughtController = {
         });
 },
 
-addThought({ params, body }) { //creting a new thought
-    Thoughts.create({
-        thoughtsText: body.thoughtsText,
+addThought({ params, body }, res) { //creting a new thought
+    Thought.create({
+        thoughtText: body.thoughtText,
         username: body.username,
         userId: params.userId
     })
         .then(({ _id }) => {
             return User.findOneAndUpdate(
                 { _id: params.userId },
-                { $addToSet: { thoughts: _id } },
+                { $addToSet: { thought: _id } },
                 { new: true }
             );
         })
@@ -51,8 +51,8 @@ addThought({ params, body }) { //creting a new thought
 },
 
 updateThought({ params, body }, res) { //updating thoughts
-    Thoughts.findOneAndUpdate(
-        { _id: params.thoughtsId },
+    Thought.findOneAndUpdate(
+        { _id: params.thoughtId },
         body,
         { new: true }
     )
@@ -67,8 +67,8 @@ updateThought({ params, body }, res) { //updating thoughts
 },
 
 deleteThoughts({params }, res) { //deletedd thoughts 
-    Thoughts.findOneAndDelete(
-        { _id: params.thoughtsId}
+    Thought.findOneAndDelete(
+        { _id: params.thoughtId}
     )
     .then(dbUserData => {
         if(!dbUserData){
@@ -80,8 +80,8 @@ deleteThoughts({params }, res) { //deletedd thoughts
 },
 
 addRecation({params, body}, res) { //to post a reaction 
-    Thoughts.findOneAndUpdate(
-        { _id: params.thoughstId},
+    Thought.findOneAndUpdate(
+        { _id: params.thoughtId},
         { $addToSet: { reaction: body } },
         {new: true, runValidators:true },
     )
@@ -96,7 +96,7 @@ addRecation({params, body}, res) { //to post a reaction
 },
 
 deleteReactions({params,}, res) { //delete a reacton 
-    Thoughts.findOneAndUpdate(
+    Thought.findOneAndUpdate(
         { _id: params.thoughtsId},
         {$pull:{reaction:{reaction_id:params.reaction_id}}},
         {new: true},
@@ -112,4 +112,4 @@ deleteReactions({params,}, res) { //delete a reacton
 };
 
 
-exports.module = thoughtController;
+module.exports = thoughtController;
