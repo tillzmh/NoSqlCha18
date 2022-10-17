@@ -1,4 +1,5 @@
 const { User, Thought} = require('../models/index');
+const Thoughts = require('../models/Thought');
 const userController = {
     
     getAllUsers(req, res) { // get all user 
@@ -36,7 +37,7 @@ const userController = {
         .catch(err => res.status(404).json(err));
     },
 
-    updateUser({params, body}, res) { // update user 
+    updateUser({params, body}, res) { // update user by id
         User.findOneAndUpdate(
             {_id:params.id},
             body, 
@@ -47,14 +48,22 @@ const userController = {
                 res.status(404).json({message: 'User not found'});
                 return;
             }
-            return re.json(dbUserData);
+            return res.json(dbUserData);
         })
         .catch(err => res.status(400).json(err));
     },
 
-
-
-
-
+    deleteUser({params}, res) {
+        User.findOneAndUpdate({_id: params.id})
+        .then(dbUserData => {
+            if(!dbUserData) {
+                res.status(404).json({message: 'User not found with this ID'});
+                return;
+            }
+            return Thoughts.deleteMany({userId:params.id})
+        })
+        .then(data => res.json(data))
+        .catch(err => res.status(400).json(err));
+    },
 
 }
