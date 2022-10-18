@@ -80,6 +80,17 @@ const userController = {
             return res.json(dbUserData);
             })
             .catch(err => res.json(err));
+        },
 
+        deleteFriend({params}, res) { // delete a friend
+            User.findAndUpade(
+                {_id:params.userId},
+                {$pull:{friends:params.friendId}},
+                {new:true},
+            )
+            .then(dbUserData => res.json(dbUserData))
+            .catch(err => res.json(err));
         }
-    }
+    };
+
+    module.exports= userController;
