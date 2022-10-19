@@ -18,7 +18,7 @@ router.route('/:id') //set up get, put and delete but _id
     .put(updateUser)
     .delete(deleteUser)
 
-    router.route('/:userID/friends/:friendId') // post and delete friends 
+    router.route('/:userId/friends/:friendId') // post and delete friends 
     .post(addFriend)
     .delete(deleteFriend)
 

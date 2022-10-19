@@ -83,7 +83,7 @@ addRecation({params, body}, res) { //to post a reaction
     Thought.findOneAndUpdate(
         { _id: params.thoughtId},
         { $addToSet: { reaction: body } },
-        {new: true, runValidators: true },
+        {new: true, runValidators:true },
     )
     .then(dbUserData => {
         if(!dbUserData){
